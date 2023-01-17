@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
-const User = require('./../models/User');
-const Note = require('./../models/Note');
+const User = require('../models/User');
+const Note = require('../models/Note');
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-password').lean();
