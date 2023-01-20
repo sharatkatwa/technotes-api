@@ -17,7 +17,7 @@ const getAllNotes = asyncHandler(async (req, res) => {
       return { ...note, username: user.username };
     })
   );
-  res.status(200).json({ results: notesWithUser.length, notes: notesWithUser });
+  res.status(200).json({ notes: notesWithUser });
 });
 // const GetNote = asyncHandler(async (req, res) => {});
 const createNote = asyncHandler(async (req, res) => {

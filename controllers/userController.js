@@ -8,7 +8,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   if (!users?.length) {
     return res.status(404).json({ message: 'Users Not Found' });
   }
-  res.status(200).json({ results: users.length, users });
+  res.status(200).json({ users });
 });
 
 // const getUser = asyncHandler(async(req, res) => {
