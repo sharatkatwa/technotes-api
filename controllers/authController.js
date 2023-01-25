@@ -1,4 +1,4 @@
-const User = require('./../models/User');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
@@ -14,6 +14,7 @@ const login = asyncHandler(async (req, res) => {
   if (!foundUser || !foundUser.active) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
+
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) {
@@ -28,30 +29,29 @@ const login = asyncHandler(async (req, res) => {
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '10s' }
+    { expiresIn: '15m' }
   );
 
   const refreshToken = jwt.sign(
     { username: foundUser.username },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: '1d' }
+    { expiresIn: '7d' }
   );
 
   // create secure Cookie with refresh token
   res.cookie('jwt', refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'none', // cross site cookie
+    sameSite: 'None', // cross site cookie
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   // send accessToken containing username and role
-  res.send({ accessToken });
+  res.json({ accessToken });
 });
 
-const refresh = async (req, res) => {
+const refresh = (req, res) => {
   const cookies = req.cookies;
-  console.log(cookies);
   if (!cookies?.jwt) {
     return res.status(401).json({ message: 'unauthorized' });
   }
@@ -63,7 +63,9 @@ const refresh = async (req, res) => {
     asyncHandler(async (err, decoded) => {
       if (err) return res.status(403).json({ message: 'forbidden' });
 
-      const foundUser = await User.findOne({ username: decoded.username });
+      const foundUser = await User.findOne({
+        username: decoded.username,
+      }).exec();
 
       if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -75,8 +77,9 @@ const refresh = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '10s' }
+        { expiresIn: '15m' }
       );
+
       res.json({ accessToken });
     })
   );
@@ -85,8 +88,9 @@ const refresh = async (req, res) => {
 const logout = (req, res) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.status(204);
-  res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true });
+  if (!cookies?.jwt) return res.sendStatus(204); //No content
+
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
   res.json({ message: 'logout successful' });
 };
 

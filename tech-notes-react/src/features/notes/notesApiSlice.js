@@ -17,7 +17,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
       },
       keepUnusedDataFor: 5,
       transformResponse: (response) => {
-        const loadedNotes = response.notes.map((note) => {
+        const loadedNotes = response.notes?.map((note) => {
           note.id = note._id;
           return note;
         });
