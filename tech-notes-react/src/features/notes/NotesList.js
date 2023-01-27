@@ -1,5 +1,5 @@
-import { useGetNotesQuery } from './notesApiSlice';
-import Note from './Note';
+import { useGetNotesQuery } from './notesApiSlice'
+import Note from './Note'
 
 const NotesList = () => {
   const {
@@ -8,25 +8,25 @@ const NotesList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetNotesQuery(undefined, {
+  } = useGetNotesQuery('NotesList', {
     pollingInterval: 15000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-  });
+  })
 
-  let content;
+  let content
 
-  if (isLoading) content = <p>Loading...</p>;
+  if (isLoading) content = <p>Loading...</p>
 
   if (isError) {
-    content = <p className='errmsg'>{error?.data?.message}</p>;
+    content = <p className='errmsg'>{error?.data?.message}</p>
   }
 
   if (isSuccess) {
-    const { ids } = notes;
+    const { ids } = notes
     const tableContent = ids?.length
       ? ids.map((noteId) => <Note key={noteId} noteId={noteId} />)
-      : null;
+      : null
     content = (
       <table className='table table--notes'>
         <thead className='table__thead'>
@@ -53,9 +53,9 @@ const NotesList = () => {
         </thead>
         <tbody>{tableContent}</tbody>
       </table>
-    );
+    )
   }
 
-  return content;
-};
-export default NotesList;
+  return content
+}
+export default NotesList

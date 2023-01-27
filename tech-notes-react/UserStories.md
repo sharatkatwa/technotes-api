@@ -6,7 +6,7 @@
 4. [x] Provide a welcome page after login
 5. [ ] Provide easy navigation
 6. [ ] Display current user and assigned role
-7. [ ] Provide a logout option
+7. [x] Provide a logout option
 8. [ ] Require users to login at least once per week
 9. [ ] Provide a way to remove employee access asap if needed
 10. [x] Notes are assigned to specific employees
