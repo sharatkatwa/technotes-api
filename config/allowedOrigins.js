@@ -1,6 +1,5 @@
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://www.dandrepairshop.com',
-  'https://dandrepairshop.com',
-];
-module.exports = allowedOrigins;
+  'https://technotes-6a78.onrender.com',
+]
+module.exports = allowedOrigins
